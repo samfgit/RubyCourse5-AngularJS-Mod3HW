@@ -2,23 +2,37 @@
 	
 angular.module('MenuSearch',[])
 .controller('FoodMenuController',FoodMenuController)
-.service('RetrieveMenuItemsService', RetrieveMenuItemsService);
+.service('RetrieveMenuItemsService', RetrieveMenuItemsService)
+.directive('foundItems', FoundItemsDirective);
 
+
+function FoundItemsDirective() {
+  var ddo = {
+    templateUrl: 'foundItems.html',
+    scope: {
+      items: '<',
+      onRemove: '&'
+    }
+  };
+
+  return ddo;
+}
 
 FoodMenuController.$inject = ['$scope','RetrieveMenuItemsService'];
 function FoodMenuController($scope, RetrieveMenuItemsService) {
+	var list = this;
 
-	$scope.removeItem = function (index) {
-		$scope.menuItems.splice(index,1);
+	list.removeItem = function (index) {
+		list.menuItems.splice(index,1);
 	}
 
-	$scope.narrowItems = function () {
-		console.log($scope.menuItems);
-		RetrieveMenuItemsService.getMatchedMenuItems($scope.foodDesc)
+	list.narrowItems = function () {
+		console.log(list.menuItems);
+		RetrieveMenuItemsService.getMatchedMenuItems(list.foodDesc)
 						.then(function (filteredMenuItems) {
-							$scope.menuItems = filteredMenuItems;
+							list.menuItems = filteredMenuItems;
 							console.log('Returned Menu Items: ')
-							console.log($scope.menuItems);
+							console.log(list.menuItems);
 						});	;
 	};
 }
@@ -37,6 +51,8 @@ function RetrieveMenuItemsService($http) {
 						var filteredItems = isEmpty? menu : menu.filter(function(item) {
 							return (item.description.indexOf(searchTerm)>=0);
 						});
+						console.log('filteredItems');
+						console.log(filteredItems);
 						return filteredItems;
 				});
 	}

@@ -23,45 +23,31 @@
     	.error {
     		color:red;
     	}
+    	.remove-btn {
+		    margin-left: 8px;
+    	}
     </style>
 </head>
 <body ng-app="MenuSearch">
-	<div class="container" ng-controller="FoodMenuController as foodCtrl">
+	<div class="container" ng-controller="FoodMenuController as list">
 		<div class="row">
 			<div class="col-md-10" >
 				<br>
 				<h1>Search for your favourite food:</h1>
 				<br>
 			    <div class="input-group input-group-md">
-			      <input type="text" class="form-control" ng-model="foodDesc" placeholder="What would you like to eat?">
+			      <input type="text" class="form-control" ng-model="list.foodDesc" placeholder="What would you like to eat?">
 			      <span class="input-group-btn">
-			        <button class="btn btn-secondary" type="button" ng-model="narrowBtn" ng-click="narrowItems()">Narrow It Down For Me!</button>
+			        <button class="btn btn-secondary" type="button" ng-model="narrowBtn" ng-click="list.narrowItems()">Narrow It Down For Me!</button>
 			      </span>
 			    </div>
 			    <br>
 			</div>
 
-			<div class="col-md-10" ng-if="menuItems"> 
-				Number of Results: <span class="tip"> {{menuItems.length}}</span>
-				<br>
-				<br>
-			</div>
-
-			<div class="col-md-10">
-				<ul class="list-group">
-				  <li class="list-group-item justify-content-between" ng-repeat="item in menuItems">
-					<h5 class="col-md-7">{{item.name}} - ({{item.short_name}})</h5>
-					<span class="col-md-3 text-center small">
-						Id: <span class="tip">{{item.id}}</span> - 
-						Price: <span class="tip">{{item.price_large | currency}}</span>
-					</span>
-				    <span class="col-md-7">{{item.description}}</span> 
-				    <button type="button" class="btn btn-warning" ng-click="removeItem($index)">
-				    	Don't want this one!
-			    	</button>
-				  </li>
-				</ul>
-			</div>
+			<found-items
+				items="list.menuItems"
+				on-remove="list.removeItem(index)"
+			></found-items>
 		</div>
 		<br>
 	</div>

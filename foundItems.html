@@ -1,0 +1,23 @@
+<div class="col-md-10" ng-if="items"> 
+	Number of Results: <span class="tip"> {{items.length}}</span>
+	<br>
+	<br>
+</div>
+
+<div class="col-md-10">
+	<ul class="list-group">
+	  <li class="list-group-item justify-content-between" ng-repeat="item in items">
+		<h5 class="col-md-9">{{item.name}}  -  ({{item.short_name}})</h5>
+		<span class="col-md-3 text-center small">
+			Id: <span class="tip">{{item.id}}</span> - 
+			Price: <span class="tip">{{item.price_large | currency}}</span>
+		</span>
+	    <span class="col-md-9">{{item.description}}</span> 
+	    <div class="col-md-3">
+		    <button type="button" class="btn btn-warning remove-btn" ng-click="onRemove({index:$index});">
+		    	Don't want this one!
+	    	</button>
+    	</div>
+	  </li>
+	</ul>
+</div>
