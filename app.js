@@ -28,12 +28,16 @@ function FoodMenuController($scope, RetrieveMenuItemsService) {
 
 	list.narrowItems = function () {
 		console.log(list.menuItems);
-		RetrieveMenuItemsService.getMatchedMenuItems(list.foodDesc)
-						.then(function (filteredMenuItems) {
-							list.menuItems = filteredMenuItems;
-							console.log('Returned Menu Items: ')
-							console.log(list.menuItems);
-						});	;
+		if (list.foodDesc != "") {
+			RetrieveMenuItemsService.getMatchedMenuItems(list.foodDesc)
+							.then(function (filteredMenuItems) {
+								list.menuItems = filteredMenuItems;
+								console.log('Returned Menu Items: ')
+								console.log(list.menuItems);
+							});	;
+		} else {
+			list.menuItems = [];
+		}
 	};
 }
 
@@ -47,8 +51,11 @@ function RetrieveMenuItemsService($http) {
 						})
 				.then(function (returnedObject) {
 						var menu = returnedObject.data.menu_items;
-						var isEmpty = (!searchTerm) || (searchTerm == "");
-						var filteredItems = isEmpty? menu : menu.filter(function(item) {
+						// var isEmpty = (!searchTerm) || (searchTerm == "");
+						// var filteredItems = isEmpty? menu : menu.filter(function(item) {
+						// 	return (item.description.indexOf(searchTerm)>=0);
+						// });
+						var filteredItems = menu.filter(function(item) {
 							return (item.description.indexOf(searchTerm)>=0);
 						});
 						console.log('filteredItems');
